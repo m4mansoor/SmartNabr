@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartNabr — IoT Arabia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00B4D8;
+            --primary-dark: #0077B6;
+            --accent: #00F5D4;
+            --dark: #03045E;
+            --darker: #020336;
+            --card-bg: rgba(255,255,255,0.04);
+            --card-border: rgba(0,180,216,0.2);
+            --text: #E0F7FF;
+            --text-muted: #90C8D8;
+            --gradient: linear-gradient(135deg, #03045E 0%, #0077B6 50%, #00B4D8 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* HERO */
+        .hero {
+            background: var(--gradient);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(0,245,212,0.15) 0%, transparent 70%);
+            top: -100px; right: -100px;
+            border-radius: 50%;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(0,180,216,0.2) 0%, transparent 70%);
+            bottom: -50px; left: -50px;
+            border-radius: 50%;
+        }
+
+        .brand-badge {
+            background: rgba(0,245,212,0.15);
+            border: 1px solid rgba(0,245,212,0.4);
+            color: var(--accent);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+        }
+
+        .arabic-word {
+            font-size: 72px;
+            font-weight: 900;
+            color: rgba(255,255,255,0.08);
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            letter-spacing: -2px;
+            line-height: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(52px, 8vw, 96px);
+            font-weight: 900;
+            letter-spacing: -3px;
+            line-height: 1;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(135deg, #ffffff 0%, #00F5D4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 16px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tagline {
+            font-size: clamp(16px, 2.5vw, 22px);
+            color: rgba(255,255,255,0.85);
+            margin-top: 24px;
+            font-weight: 400;
+            font-style: italic;
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+            line-height: 1.6;
+        }
+
+        .hero-cta {
+            margin-top: 40px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--darker);
+            padding: 14px 36px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 15px;
+            text-decoration: none;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,245,212,0.4);
+        }
+
+        .btn-outline {
+            border: 2px solid rgba(255,255,255,0.4);
+            color: white;
+            padding: 14px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255,255,255,0.4);
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .scroll-dot {
+            width: 6px; height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: bounce 1.5s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); opacity: 1; }
+            50% { transform: translateY(8px); opacity: 0.4; }
+        }
+
+        /* STATS BAR */
+        .stats-bar {
+            background: rgba(0,180,216,0.08);
+            border-top: 1px solid var(--card-border);
+            border-bottom: 1px solid var(--card-border);
+            padding: 40px 20px;
+        }
+
+        .stats-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .stat-item p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 6px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        /* SECTIONS */
+        section {
+            padding: 80px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -1px;
+        }
+
+        .section-title span {
+            color: var(--primary);
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 17px;
+            line-height: 1.7;
+            margin-top: 16px;
+            max-width: 620px;
+        }
+
+        /* PROBLEM */
+        .problem-section {
+            background: linear-gradient(135deg, rgba(3,4,94,0.8) 0%, rgba(0,119,182,0.2) 100%);
+            border-radius: 24px;
+            padding: 60px 40px;
+            margin: 0 20px;
+            border: 1px solid var(--card-border);
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .problem-card {
+            background: rgba(255,50,50,0.06);
+            border: 1px solid rgba(255,100,100,0.2);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            transition: transform 0.3s;
+        }
+
+        .problem-card:hover { transform: translateY(-4px); }
+
+        .problem-icon {
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .problem-card h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ff9999;
+            margin-bottom: 6px;
+        }
+
+        .problem-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* FEATURES */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 48px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 28px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--primary);
+            background: rgba(0,180,216,0.08);
+        }
+
+        .feature-card:hover::before { opacity: 1; }
+
+        .feature-icon {
+            font-size: 36px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* HOW IT WORKS */
+        .how-bg {
+            background: linear-gradient(180deg, var(--darker) 0%, rgba(3,4,94,0.5) 50%, var(--darker) 100%);
+            padding: 80px 20px;
+        }
+
+        .steps-container {
+            max-width: 1100px;
+            margin: 48px auto 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0;
+            position: relative;
+        }
+
+        .steps-container::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            z-index: 0;
+        }
+
+        .step {
+            text-align: center;
+            padding: 20px 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 80px; height: 80px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 28px;
+            font-weight: 900;
+            color: white;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 30px rgba(0,180,216,0.4);
+        }
+
+        .step h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .step p {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* SECTORS */
+        .sectors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 48px;
+        }
+
+        .sector-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .sector-card:hover {
+            background: rgba(0,180,216,0.1);
+            border-color: var(--primary);
+            transform: translateY(-4px);
+        }
+
+        .sector-icon { font-size: 36px; margin-bottom: 12px; display: block; }
+        .sector-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+        .sector-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+        /* BENEFITS */
+        .benefits-section {
+            background: linear-gradient(135deg, rgba(0,245,212,0.05) 0%, rgba(0,119,182,0.1) 100%);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 60px 40px;
+            margin: 0 20px;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .benefit-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .benefit-check {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .benefit-item h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .benefit-item p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* POC BANNER */
+        .poc-banner {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--dark) 100%);
+            border-radius: 24px;
+            padding: 60px 40px;
+            margin: 0 20px;
+            text-align: center;
+            border: 1px solid rgba(0,245,212,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .poc-banner::before {
+            content: '💧';
+            position: absolute;
+            font-size: 200px;
+            opacity: 0.05;
+            top: -30px;
+            right: -30px;
+        }
+
+        .poc-banner h2 {
+            font-size: clamp(24px, 4vw, 38px);
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .poc-banner p {
+            color: rgba(255,255,255,0.7);
+            font-size: 16px;
+            max-width: 560px;
+            margin: 0 auto 32px;
+            line-height: 1.7;
+        }
+
+        /* CONTACT */
+        .contact-section {
+            background: rgba(0,0,0,0.4);
+            border-top: 1px solid var(--card-border);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .contact-cards {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 32px;
+        }
+
+        .contact-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px 28px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            min-width: 220px;
+            transition: all 0.3s;
+        }
+
+        .contact-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .contact-card .icon { font-size: 24px; }
+        .contact-card .label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .contact-card .value { font-size: 14px; font-weight: 600; color: white; }
+
+        /* FOOTER */
+        footer {
+            background: var(--darker);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .product-family {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 16px;
+        }
+
+        .product-tag {
+            background: rgba(0,180,216,0.1);
+            border: 1px solid var(--card-border);
+            color: var(--text-muted);
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .product-tag.active {
+            background: rgba(0,245,212,0.15);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        footer p {
+            color: rgba(255,255,255,0.3);
+            font-size: 12px;
+            margin-top: 20px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .steps-container::before { display: none; }
+            .problem-section, .benefits-section, .poc-banner { padding: 40px 24px; margin: 0 10px; }
+            .arabic-word { font-size: 48px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="arabic-word">نَبْر</div>
+    <div class="brand-badge">IoT Arabia — Smart Water Solutions</div>
+    <h1>SmartNabr</h1>
+    <p class="hero-sub">AI-Powered Water Intelligence</p>
+    <p class="tagline">"IoT-Connected, AI-Intelligent — Every Drop Monitored"</p>
+    <div class="hero-cta">
+        <a href="#contact" class="btn-primary">Request a PoC</a>
+        <a href="#features" class="btn-outline">Explore Features</a>
+    </div>
+    <div class="scroll-indicator">
+        <span>Scroll</span>
+        <div class="scroll-dot"></div>
+    </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+    <div class="stats-container">
+        <div class="stat-item">
+            <h3>30%</h3>
+            <p>Water Cost Reduction</p>
+        </div>
+        <div class="stat-item">
+            <h3>24/7</h3>
+            <p>Real-Time Monitoring</p>
+        </div>
+        <div class="stat-item">
+            <h3>&lt;2ms</h3>
+            <p>Alert Response Time</p>
+        </div>
+        <div class="stat-item">
+            <h3>5+</h3>
+            <p>Years Proven IoT R&D</p>
+        </div>
+    </div>
+</div>
+
+<!-- WHAT IS -->
+<section>
+    <p class="section-label">Overview</p>
+    <h2 class="section-title">Intelligent Water<br><span>Monitoring for Industry</span></h2>
+    <p class="section-desc">SmartNabr is an AI-powered, IoT-enabled smart water monitoring solution designed for industrial and commercial facilities across Saudi Arabia. It delivers real-time visibility into water consumption, tank levels, flow rates, and anomalies — keeping your operations efficient, compliant, and waste-free.</p>
+</section>
+
+<!-- PROBLEM -->
+<div style="padding: 0 0 80px;">
+    <div class="problem-section" style="max-width:1100px; margin: 0 auto;">
+        <p class="section-label">The Challenge</p>
+        <h2 class="section-title">Water Waste is a<br><span style="color:#ff9999;">Costly Silent Problem</span></h2>
+        <div class="problem-grid">
+            <div class="problem-card">
+                <div class="problem-icon">🌊</div>
+                <div>
+                    <h4>Critical & Costly Resource</h4>
+                    <p>Water is scarce and expensive in KSA — every liter wasted directly impacts operational costs.</p>
+                </div>
+            </div>
+            <div class="problem-card">
+                <div class="problem-icon">🔍</div>
+                <div>
+                    <h4>Undetected Leakages</h4>
+                    <p>Hidden leaks go unnoticed for days or weeks, causing massive financial and infrastructural losses.</p>
+                </div>
+            </div>
+            <div class="problem-card">
+                <div class="problem-icon">👷</div>
+                <div>
+                    <h4>Manual Monitoring</h4>
+                    <p>Relying on manual checks is labor-intensive, unreliable, and leaves critical gaps in visibility.</p>
+                </div>
+            </div>
+            <div class="problem-card">
+                <div class="problem-icon">⏰</div>
+                <div>
+                    <h4>Late Problem Discovery</h4>
+                    <p>Without real-time alerts, problems are discovered too late — after significant damage is already done.</p>
+                </div>
+            </div>
+            <div class="problem-card">
+                <div class="problem-icon">📊</div>
+                <div>
+                    <h4>No Data, No Decisions</h4>
+                    <p>Without consumption data, there is no way to optimize, forecast, or plan water infrastructure effectively.</p>
+                </div>
+            </div>
+            <div class="problem-card">
+                <div class="problem-icon">🌱</div>
+                <div>
+                    <h4>Sustainability Pressure</h4>
+                    <p>Saudi Vision 2030 demands measurable water conservation — companies need tools to prove compliance.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features">
+    <p class="section-label">Capabilities</p>
+    <h2 class="section-title">Everything You Need to<br><span>Master Water Intelligence</span></h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <span class="feature-icon">💧</span>
+            <h3>Real-Time Tank Level Monitoring</h3>
+            <p>Know your water levels at all times with live sensor data streamed directly to your dashboard.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🔁</span>
+            <h3>Flow Rate Tracking</h3>
+            <p>Monitor water flow across all points in your facility — identify high-consumption zones instantly.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🚨</span>
+            <h3>AI-Powered Leak Detection</h3>
+            <p>AI engine detects abnormal consumption patterns and fires instant alerts before leaks cause damage.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">📊</span>
+            <h3>Consumption Analytics Dashboard</h3>
+            <p>Daily, weekly, and monthly consumption reports with visual trend analysis and KPI tracking.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🤖</span>
+            <h3>Predictive AI Alerts</h3>
+            <p>AI predicts water shortages and maintenance needs before they disrupt your operations.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">📱</span>
+            <h3>Mobile & Web Access</h3>
+            <p>Monitor your entire water infrastructure from anywhere, on any device, at any time.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">⚙️</span>
+            <h3>Pump Automation</h3>
+            <p>Auto-trigger pumps based on configurable level thresholds — zero manual intervention required.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🔗</span>
+            <h3>Easy Integration</h3>
+            <p>Retrofit-friendly design works with your existing water infrastructure with zero operational disruption.</p>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<div class="how-bg">
+    <div style="max-width:1100px; margin: 0 auto; padding: 0 20px;">
+        <p class="section-label">Process</p>
+        <h2 class="section-title">How <span>SmartNabr</span> Works</h2>
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h4>IoT Sensors Installed</h4>
+                <p>Sensors deployed on tanks, pipelines, and flow measurement points</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h4>Real-Time Data Transmission</h4>
+                <p>Data streamed continuously to secure cloud dashboard</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h4>AI Engine Analysis</h4>
+                <p>AI analyzes patterns, detects anomalies, and predicts issues</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h4>Instant Alerts</h4>
+                <p>Notifications sent via mobile app, SMS, or email immediately</p>
+            </div>
+            <div class="step">
+                <div class="step-number">5</div>
+                <h4>Actionable Reports</h4>
+                <p>Management reports generated for data-driven decision making</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTORS -->
+<section>
+    <p class="section-label">Target Industries</p>
+    <h2 class="section-title">Built for <span>KSA's Key Sectors</span></h2>
+    <div class="sectors-grid">
+        <div class="sector-card">
+            <span class="sector-icon">🛢️</span>
+            <h4>Oil & Gas</h4>
+            <p>Remote site water tank monitoring for upstream and downstream facilities</p>
+        </div>
+        <div class="sector-card">
+            <span class="sector-icon">🏭</span>
+            <h4>Manufacturing</h4>
+            <p>Process water consumption tracking and efficiency optimization</p>
+        </div>
+        <div class="sector-card">
+            <span class="sector-icon">📦</span>
+            <h4>Warehousing & Logistics</h4>
+            <p>Facility water management and wastage reduction</p>
+        </div>
+        <div class="sector-card">
+            <span class="sector-icon">🏢</span>
+            <h4>Commercial Buildings</h4>
+            <p>Smart water management for offices, malls, and mixed-use facilities</p>
+        </div>
+        <div class="sector-card">
+            <span class="sector-icon">🏙️</span>
+            <h4>Municipalities</h4>
+            <p>Distribution network monitoring and loss reduction programs</p>
+        </div>
+    </div>
+</section>
+
+<!-- BENEFITS -->
+<div style="padding: 0 0 80px;">
+    <div class="benefits-section" style="max-width:1100px; margin: 0 auto;">
+        <p class="section-label">Business Value</p>
+        <h2 class="section-title">Why Smart Companies<br><span>Choose SmartNabr</span></h2>
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <div class="benefit-check">📉</div>
+                <div>
+                    <h4>Reduce Water Costs by up to 30%</h4>
+                    <p>Eliminate waste through AI-powered anomaly detection and consumption optimization.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-check">⏱️</div>
+                <div>
+                    <h4>Save Operational Hours</h4>
+                    <p>Eliminate manual checks and inspections — your team focuses on what matters most.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-check">🌱</div>
+                <div>
+                    <h4>Align with Saudi Vision 2030</h4>
+                    <p>Meet national sustainability and water conservation goals with measurable data.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-check">🔒</div>
+                <div>
+                    <h4>Prevent Costly Losses</h4>
+                    <p>Stop financial damage from undetected leaks and unexpected pump failures.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-check">📈</div>
+                <div>
+                    <h4>Data-Driven Planning</h4>
+                    <p>Make infrastructure decisions backed by real consumption data and AI insights.</p>
+                </div>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-check">🚀</div>
+                <div>
+                    <h4>Zero Disruption Deployment</h4>
+                    <p>Retrofit-friendly installation with no downtime or changes to existing operations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- POC BANNER -->
+<div style="padding: 0 0 80px;">
+    <div class="poc-banner" style="max-width:1100px; margin: 0 auto;">
+        <h2>Experience SmartNabr<br>Before You Commit</h2>
+        <p>IoT Arabia offers a <strong>Customer-Funded Proof of Concept (PoC)</strong> — see SmartNabr live in your own facility, with your own data, before full deployment. No risk. Full transparency.</p>
+        <a href="#contact" class="btn-primary">Start Your PoC Today</a>
+    </div>
+</div>
+
+<!-- CONTACT -->
+<div class="contact-section" id="contact">
+    <p class="section-label" style="text-align:center;">Get In Touch</p>
+    <h2 class="section-title" style="text-align:center;">Ready to <span>Transform</span> Your<br>Water Management?</h2>
+    <div class="contact-cards">
+        <div class="contact-card">
+            <div class="icon">📧</div>
+            <div>
+                <div class="label">Email</div>
+                <div class="value">info@iotarabia.com</div>
+            </div>
+        </div>
+        <div class="contact-card">
+            <div class="icon">🌐</div>
+            <div>
+                <div class="label">Website</div>
+                <div class="value">www.iotarabia.com</div>
+            </div>
+        </div>
+        <div class="contact-card">
+            <div class="icon">📍</div>
+            <div>
+                <div class="label">Location</div>
+                <div class="value">Al Khobar, Eastern Province, KSA</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-logo">IoT Arabia</div>
+    <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Powering Arabia's Industry with AI-Driven IoT Intelligence</p>
+    <div class="product-family">
+        <span class="product-tag active">SmartNabr</span>
+        <span class="product-tag">SmartNar</span>
+        <span class="product-tag">SmartBarid</span>
+        <span class="product-tag">SmartHawa</span>
+        <span class="product-tag">SmartHaris</span>
+        <span class="product-tag">SmartWasl</span>
+        <span class="product-tag">SmartTaqa</span>
+    </div>
+    <p>© 2026 IoT Arabia. All rights reserved. | Al Khobar, Saudi Arabia</p>
+</footer>
+
+</body>
+</html>
